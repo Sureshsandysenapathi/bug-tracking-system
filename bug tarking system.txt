@@ -1,0 +1,116 @@
+package util;
+import java.util.*;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+
+class Bug {
+    private String title;
+    private String description;
+    private boolean resolved;
+
+    public Bug(String title, String description) {
+        this.title = title;
+        this.description = description;
+        this.resolved = false;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public boolean isResolved() {
+        return resolved;
+    }
+
+    public void resolve() {
+        this.resolved = true;
+    }
+
+    @Override
+    public String toString() {
+        return "Title: " + title + "\nDescription: " + description + "\nStatus: " + (resolved ? "Resolved" : "Unresolved");
+    }
+}
+
+class BugTracker {
+    private ArrayList<Bug> bugs;
+
+    public BugTracker() {
+        bugs = new ArrayList<>();
+    }
+
+    public void addBug(String title, String description) {
+        Bug bug = new Bug(title, description);
+        bugs.add(bug);
+    }
+
+    public void resolveBug(int index) {
+        if (index >= 0 && index < bugs.size()) {
+            bugs.get(index).resolve();
+        } else {
+            System.out.println("Invalid bug index.");
+        }
+    }
+
+    public void listBugs() {
+        if (bugs.size() == 0) {
+            System.out.println("No bugs found.");
+        } else {
+            for (int i = 0; i < bugs.size(); i++) {
+                System.out.println("Bug #" + i);
+                System.out.println(bugs.get(i));
+            }
+        }
+    }
+}
+
+public class BugTrackingDemo {
+    public static void main(String[] args) {
+        BugTracker bugTracker = new BugTracker();
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("\nBug Tracking System Menu:");
+            System.out.println("1. Add Bug");
+            System.out.println("2. Resolve Bug");
+            System.out.println("3. List Bugs");
+            System.out.println("4. Quit");
+            System.out.print("Enter your choice: ");
+
+            int choice = scanner.nextInt();
+            scanner.nextLine(); // Consume the newline character
+
+            switch (choice) {
+                case 1:
+                    System.out.print("Enter bug title: ");
+                    String title = scanner.nextLine();
+                    System.out.print("Enter bug description: ");
+                    String description = scanner.nextLine();
+                    bugTracker.addBug(title, description);
+                    System.out.println("Bug added successfully.");
+                    break;
+                case 2:
+                    System.out.print("Enter bug index to resolve: ");
+                    int index = scanner.nextInt();
+                    bugTracker.resolveBug(index);
+                    break;
+                case 3:
+                    bugTracker.listBugs();
+                    break;
+                case 4:
+                    System.out.println("Exiting...");
+                    scanner.close();
+                    return;
+                default:
+                    System.out.println("Invalid choice. Please try again.");
+                    break;
+            }
+        }
+    }
+}
+
